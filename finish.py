@@ -6,19 +6,47 @@
 
 #爬取資料
 # def information():
-get_ipython().run_line_magic('pip', 'install selenium')
+#get_ipython().run_line_magic('pip', 'install selenium')
+#Ｋ：因為沒有jupyter,已經直接在外面裝好了
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import datetime
-
+from fake_useragent import UserAgent
+import random
+import requests
+#K
+from selenium.common.exceptions import NoSuchElementException 
 
 start_time = time.time()#開始時間
-user_agent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36"
-driverPath = 'chromedriver.exe'
+
+#user_agent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36"
+
+#kdown_1028
+ua = UserAgent()
+user_agent = ua.chrome
+
+ips = [['80.59.199.212', '8080'],
+    ['103.124.2.229', '3128'],
+    ['103.23.60.103', '8080']]
+
+
+
+k = random.choice(ips)
+proxies = k[0]+':'+k[1]
+#kup_1028
+
+driverPath = '../../chromedriver'
 opt = webdriver.ChromeOptions()
 opt.add_argument('--user-agent=%s' % user_agent)
-browser = webdriver.Chrome(driverPath, options=opt)
+#k3_1028
+# opt.add_argument('--proxy-server=https://' + proxies)
+opt.add_argument(f'--proxy-server={proxies}')
+opt.add_argument("--no-sandbox")
+opt.add_argument("--disable-dev-shm-usage")
+opt.add_argument("--headless")
+#k1_1028
+browser = webdriver.Chrome(driverPath,chrome_options=opt)
 browser.implicitly_wait(3)   
 browser.set_window_size(800, 700)
 
@@ -81,11 +109,35 @@ error_faqs = []#專案問答
 #爬取網址
 page_inf = []
 url = 'https://www.zeczec.com/categories?type=0'
+#k 保險requests
+try:    
+    ua = {'User-agent': user_agent}
+    proxy = {'https':'https://'+proxies} 
+
+    re = requests.get(url,headers = ua,proxies = proxy , timeout =2)
+    print(re.status_code)
+    if str(re.status_code) == '200':
+        print("成功get")
+    else:
+        print("失敗")
+        
+except Exception as e: 
+    print("error:",e)
+    
+
 browser.get(url)
-page = browser.find_elements_by_class_name("button.button-s.dn.dib-ns")#專案
+#k4
+try :
+    page = browser.find_elements_by_class_name("button.button-s.dn.dib-ns")
+except NoSuchElementException as e :
+    print(e)
+
+#專案
 for item in page:
     if item:
+        print(item.text)
         page_inf.append(item.text)
+print(page)
 pages = int(page_inf[-1])
 
 for page in range(18,pages+1):
@@ -362,11 +414,12 @@ for item in name_plan_day_inf1:
 
 end_time = time.time()#結束時間
 alltime = end_time - start_time
-print(f"{int(alltime//60)} 分 {int(alltime%60)} 秒爬取")    
+
+#k1028:f不能用
+print("{} 分 {} 秒爬取".float(int(alltime//60),int(alltime%60)))
 
 
 import json
-
 data = []
 
 for i in range(len(title_inf)): #將爬蟲內容轉成字典
