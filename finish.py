@@ -195,12 +195,12 @@ for link in title_href_inf:
     now = now.strftime("%Y-%m-%d %H:%M:%S") #調整時間格式
     date_time.append(now)#時間戳記
     
-    eighteen = browser.find_elements_by_class_name('lh-copy.ws-normal.button.green.mt3.w-100.tc') #18禁button位置
+    eighteen = browser.find_elements_by_css_selector('.lh-copy.ws-normal.button.green.mt3.w-100.tc') #18禁button位置
     for item in eighteen:
         if "我已滿 18 歲並同意上述條款" in item.text:
             eighteen[0].click() #點擊按鈕
 
-    title = browser.find_elements_by_class_name("f4.mt2.mb1")#專案
+    title = browser.find_elements_by_css_selector(".f4.mt2.mb1")#專案
     for item in title:
         if item:
             title_inf.append(item.text)
@@ -212,7 +212,7 @@ for link in title_href_inf:
             category_inf.append(item.text)
             print(item.text)
 
-    name = browser.find_elements_by_class_name("b.f6")#提案人
+    name = browser.find_elements_by_css_selector(".b.f6")#提案人
     for item in name:
         if item:
             name_inf.append(item.text)
@@ -225,19 +225,19 @@ for link in title_href_inf:
             price_target_inf.append(item.text)
             print(item.text)
 
-    price = browser.find_elements_by_class_name("f3.b.js-sum-raised.nowrap")#募得金額
+    price = browser.find_elements_by_css_selector(".f3.b.js-sum-raised.nowrap")#募得金額
     for item in price:
         if item:
             price_inf.append(item.text)
             print(item.text)
 
-    price_rate = browser.find_elements_by_class_name("js-percentage-raised.stroke")#金額達成率
+    price_rate = browser.find_elements_by_css_selector(".js-percentage-raised.stroke")#金額達成率
     for item in price_rate:
         if item:
             price_rate_inf.append(item.text)
             print(item.text)
 
-    people = browser.find_elements_by_class_name("js-backers-count")#贊助人數
+    people = browser.find_elements_by_css_selector(".js-backers-count")#贊助人數
     for i in range(len(title)):
         try:
             if people[i].text:
@@ -245,13 +245,13 @@ for link in title_href_inf:
         except IndexError:
             people_inf.append(0)
 
-    times = browser.find_elements_by_class_name("mb2.f7")#募資時間
+    times = browser.find_elements_by_css_selector(".mb2.f7")#募資時間
     for item in times:
         if "時程" in item.text:
             times_inf.append(item.text)
             print(item.text)
 
-    times_left = browser.find_elements_by_class_name("js-time-left")#剩餘時間
+    times_left = browser.find_elements_by_css_selector(".js-time-left")#剩餘時間
     for i in range(len(title)):
         try:
             if times_left[i].text:
@@ -259,14 +259,14 @@ for link in title_href_inf:
         except IndexError:
             times_left_inf.append("專案已結束")
 
-    program_price = browser.find_elements_by_class_name("black.b.f4")#募資方案
+    program_price = browser.find_elements_by_css_selector(".black.b.f4")#募資方案
     for item in program_price:
         if item:
             program_price_inf.append(item.text)
     program_price_inf1.append(program_price_inf)
     program_price_inf = []#募資方案
 
-    program_people = browser.find_elements_by_class_name("f7.mv2")#方案贊助人數
+    program_people = browser.find_elements_by_css_selector(".f7.mv2")#方案贊助人數
     for item in program_people:
         if item.text == '':
             program_people_inf.append(0)
@@ -275,7 +275,7 @@ for link in title_href_inf:
     program_people_inf1.append(program_people_inf)
     program_people_inf = []#方案贊助人數
 
-    realization_time = browser.find_elements_by_class_name("mt3.gray.tc.ph2.f7.ba")#實現時間
+    realization_time = browser.find_elements_by_css_selector(".mt3.gray.tc.ph2.f7.ba")#實現時間
     for item in realization_time:
         if item:
             realization_time_inf.append(item.text)
@@ -289,7 +289,7 @@ for link in title_href_inf:
         else:
             title_content_inf.append('NA')
 
-    one_img = browser.find_elements_by_class_name("overflow-hidden.aspect-ratio-project-cover.bg-near-white.br2-l")#第一張圖片
+    one_img = browser.find_elements_by_css_selector(".overflow-hidden.aspect-ratio-project-cover.bg-near-white.br2-l")#第一張圖片
     for item in one_img:
         if item:
             img1 = item.get_attribute('style')
@@ -320,7 +320,7 @@ for link in name_href_inf:
         error_link.append(link)
         continue
 
-    name_int = browser.find_elements_by_class_name("f6.mv-child-0.mv3")#提案人介紹
+    name_int = browser.find_elements_by_css_selector(".f6.mv-child-0.mv3")#提案人介紹
     for i in range(len(title)):
         try:
             if name_int[i].text:
@@ -328,18 +328,17 @@ for link in name_href_inf:
         except IndexError:
             name_int_inf.append("NA")
 
-    name_web = browser.find_elements_by_class_name("v-mid.mb2.mr3.dark-gray.f6.underline.b.relaitve.dib")#提案人網站平台
+    name_web = browser.find_elements_by_css_selector(".v-mid.mb2.mr3.dark-gray.f6.underline.b.relaitve.dib")#提案人網站平台
     for item in name_web:
         if item:
             name_web_inf.append(item.text)
             name_web_href_inf.append(item.get_attribute('href'))
-
     name_web_inf1.append(name_web_inf)
     name_web_href_inf1.append(name_web_href_inf)
     name_web_inf = []#提案人網站平台
     name_web_href_inf = []#提案人網站平台網址
 
-    name_spon = browser.find_elements_by_class_name("tr.nowrap")#提案人贊助資訊與加入天數
+    name_spon = browser.find_elements_by_css_selector(".tr.nowrap")#提案人贊助資訊與加入天數
     for item in name_spon:
         if item:
             name_spon_inf.append(item.text)
@@ -371,7 +370,7 @@ for link in name_plan_url_inf:#開始爬取
     name_plan_title_inf = []#提案人發起計畫專案
     name_plan_title_href_inf = []#提案人發起計畫專案網址
 
-    name_plan_title = browser.find_elements_by_class_name("db.f7")#提案人發起計畫專案日期
+    name_plan_title = browser.find_elements_by_css_selector(".db.f7")#提案人發起計畫專案日期
     for item in name_plan_title:
         if item:
             name_plan_day_inf.append(item.text)
@@ -391,7 +390,7 @@ for link in title_href_inf:
         error_link.append(new_url)
         continue
 
-    updates = browser.find_elements_by_class_name("b.b--drak-gray.bb-l.dib.hover-b--dark-gray.mr4.mt1.near-black.pv3")#專案更新次數
+    updates = browser.find_elements_by_css_selector(".b.b--drak-gray.bb-l.dib.hover-b--dark-gray.mr4.mt1.near-black.pv3")#專案更新次數
     for i in range(len(title)):
         try:
             if updates[i].text:
