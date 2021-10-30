@@ -11,7 +11,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import datetime
+from datetime import datetime, timezone, timedelta 
 from fake_useragent import UserAgent
 import random
 import requests
@@ -19,6 +19,12 @@ import requests
 from selenium.common.exceptions import NoSuchElementException 
 
 start_time = time.time()#開始時間
+
+tz = timezone(timedelta(hours=+8))
+# 取得現在時間、指定時區、轉為 ISO 格式
+a = datetime.now(tz)
+#開始時間
+print("開始時間：",datetime.strftime(a,"%Y/%m/%d %H:%M:%S"))
 
 #user_agent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36"
 
@@ -34,6 +40,8 @@ ips = [['80.59.199.212', '8080'],
 
 k = random.choice(ips)
 proxies = k[0]+':'+k[1]
+print(proxies)
+
 #kup_1028
 
 driverPath = '../../chromedriver'
@@ -111,25 +119,31 @@ page_inf = []
 url = 'https://www.zeczec.com/categories?type=0'
 #k 保險requests
 try:    
-    ua = {'User-agent': user_agent}
-    proxy = {'https':'https://'+proxies} 
+    # ua = {'User-agent': user_agent}
+    # proxy = {'https':'https://'+proxies} 
 
-    re = requests.get(url,headers = ua,proxies = proxy , timeout =2)
-    print(re.status_code)
-    if str(re.status_code) == '200':
-        print("成功get")
-    else:
-        print("失敗")
-        
+    # re = requests.get(url,headers = ua,proxies = proxy , timeout =2)
+    # print(re.status_code)
+    # if str(re.status_code) == '200':
+    #     print("成功get")
+    # else:
+    #     print("失敗")
+    browser.get(url)
+
+
 except Exception as e: 
-    print("error:",e)
+    print("error get:",e)
+finally :
+    print(browser.current_url)
     
 
-browser.get(url)
+
 #k4
 try :
-    page = browser.find_elements_by_class_name("button.button-s.dn.dib-ns")
-except NoSuchElementException as e :
+    # page = browser.find_elements_by_class_name("button button-s dn dib-ns")
+    page = browser.find_elements_by_css_selector("a.button.button-s.dn.dib-ns")
+
+except Exception as e :
     print(e)
 
 #專案
@@ -137,37 +151,47 @@ for item in page:
     if item:
         print(item.text)
         page_inf.append(item.text)
-print(page)
+
 pages = int(page_inf[-1])
 
-for page in range(18,pages+1):
+# for page in range(18,pages+1):
+for page in range(18,18):
     url = 'https://www.zeczec.com/categories?page=x&type=0'
     url1 = url.replace('x',str(page))
     try:
         browser.get(url1)
-
+        title_href = browser.find_elements_by_xpath('//body/div/div/div/div/a')
+        print(f"第{page}頁共有{len(title_href)}筆專案要抓")
+        #專案網址
+        for item in title_href:
+            if item:
+                    title_href_inf.append(item.get_attribute('href'))
+                    
     except Exception as e:
         print(e)#可看到錯誤是什麼
         error_url.append(url1)
         continue
+    finally :
+        time.sleep(1) 
 
-    title_href = browser.find_elements_by_xpath('//body/div/div/div/div/a')#專案網址
-    for item in title_href:
-        if item:
-            title_href_inf.append(item.get_attribute('href'))
+#
+print("開始抓專案囉！")
 
-
+now_web = 0 
 #專案網站
 for link in title_href_inf:
+    now_web +=1
+    print(f"現在是第{now_web}個專案") 
     try:
         browser.get(link)
+        print(browser.current_url)
 
     except Exception as e:
         print(e)#可看到錯誤是什麼
         error_link.append(link)
         continue
 
-    now = datetime.datetime.now() #載入現在時間點
+    now = datetime.now() #載入現在時間點
     now = now.strftime("%Y-%m-%d %H:%M:%S") #調整時間格式
     date_time.append(now)#時間戳記
     
