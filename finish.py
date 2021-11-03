@@ -33,9 +33,9 @@ print("開始時間：",datetime.strftime(a,"%Y/%m/%d %H:%M:%S"))
 ua = UserAgent()
 user_agent = ua.chrome
 
-ips = [['80.59.199.212', '8080'],
-    ['103.124.2.229', '3128'],
-    ['103.23.60.103', '8080']]
+ips = [['80.59.199.212', '8080']]
+    # ['103.124.2.229', '3128']]
+    # ,['103.23.60.103', '8080']]
 
 
 
@@ -143,7 +143,7 @@ finally :
 try :
     # page = browser.find_elements_by_class_name("button button-s dn dib-ns")
     page = browser.find_elements_by_css_selector("a.button.button-s.dn.dib-ns")
-
+    print(page)
 except Exception as e :
     print(e)
 
@@ -152,11 +152,13 @@ for item in page:
     if item:
         print(item.text)
         page_inf.append(item.text)
+    else :
+        print()
 
 pages = int(page_inf[-1])
 
 # for page in range(18,pages+1):
-for page in range(18,18):
+for page in range(18,19):
     url = 'https://www.zeczec.com/categories?page=x&type=0'
     url1 = url.replace('x',str(page))
     try:
@@ -440,7 +442,7 @@ end_time = time.time()#結束時間
 alltime = end_time - start_time
 
 #k1028:f不能用
-print("{} 分 {} 秒爬取".float(int(alltime//60),int(alltime%60)))
+print("{} 分 {} 秒爬取".format(str(int(alltime//60)),str(int(alltime%60))))
 
 
 import json
@@ -474,6 +476,8 @@ for i in range(len(title_inf)): #將爬蟲內容轉成字典
                    title_img=title_img_inf3[i],
                    updates=updates_inf[i])
     data.append(result0)#存入list
+
+
 #最終json
 result={'error_url':error_url,'error_link':error_link,'error_nam':error_name,'error_name_plan':error_name_plan,'error_updates':error_updates,'error_updates_content':error_updates_content,'error_comments':error_comments,'error_faqs':error_faqs,'data':data}
 
