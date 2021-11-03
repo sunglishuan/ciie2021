@@ -45,7 +45,7 @@ print(proxies)
 
 #kup_1028
 
-driverPath = '../../chromedriver'
+driverPath = '../chromedriver'
 opt = webdriver.ChromeOptions()
 opt.add_argument('--user-agent=%s' % user_agent)
 #k3_1028
