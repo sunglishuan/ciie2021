@@ -124,6 +124,7 @@ try:
     # print(re.status_code)
     # if str(re.status_code) == '200':
     #     print("成功get")
+        # browser.get(url)
     # else:
     #     print("失敗")
     browser.get(url)
