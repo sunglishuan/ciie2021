@@ -161,32 +161,32 @@ for link in title_href_inf:
     for item in title:
         if item:
             title_inf.append(item.text)
-            print(item.text)
+            # print(item.text)
 
     category = browser.find_elements_by_xpath('//body/div/div/div/div/div/a[2]')#專案類別
     for item in category:
         if item:
             category_inf.append(item.text)
-            print(item.text)
+            # print(item.text)
 
     name = browser.find_elements_by_css_selector(".b.f6")#提案人
     for item in name:
         if item:
             name_inf.append(item.text)
             name_href_inf.append(item.get_attribute('href'))
-            print(item.text)
+            # print(item.text)
 
     price_target = browser.find_elements_by_xpath("//body/div/div/div/div/div/div[@class='f7']")#目標金額
     for item in price_target:
         if item:
             price_target_inf.append(item.text)
-            print(item.text)
+            # print(item.text)
 
     times = browser.find_elements_by_css_selector(".mb2.f7")#募資時間
     for item in times:
         if "時程" in item.text:
             times_inf.append(item.text)
-            print(item.text)
+            # print(item.text)
 
     title_content = browser.find_elements_by_xpath('//tbody/tr/td')#專案內容
     for item in title_content:
@@ -370,6 +370,8 @@ result={'error_url':error_url,'error_link':error_link,'error_name':error_name,'e
 #存成json
 now = datetime.now() #載入現在時間點
 now = now.strftime("%Y%m%d_%H%M") #調整時間格式
+print("存成json檔",now)
+
 fn = f'./lotsFix/zeczec_fix_{now}.json'
 with open(fn, 'w', encoding='utf-8') as fnresult:
     json.dump(result,fnresult,ensure_ascii=False)
@@ -377,7 +379,7 @@ with open(fn, 'w', encoding='utf-8') as fnresult:
 
 start_time = time.time()#開始時間
 #傳入資料庫    
-get_ipython().run_line_magic('pip', 'install pymysql')
+# get_ipython().run_line_magic('pip', 'install pymysql')
 
 import pymysql
 
@@ -388,6 +390,7 @@ def listtostr(x):
         a = i[x]
         i[x] = str(a)
 changelist = ['name_web','name_web_url','name_spon','name_plan_title','name_plan_title_url','name_plan_day','title_content','title_img']
+
 for j in changelist:
     listtostr(j)
     
@@ -427,29 +430,34 @@ end_time = time.time()#結束時間
 alltime = end_time - start_time
 print(f"{int(alltime//60)} 分 {int(alltime%60)} 秒導入資料庫")
 
+now = datetime.now() #載入現在時間點
+now = now.strftime("%Y%m%d_%H%M") #調整時間格式
+print(f"FINISH {now}")
+
 
 # In[ ]:
 
 
-for j in range(len(title_inf)):
-    print('時間戳記:',date_time[j])
-    print('專案:',title_inf[j])
-    print('專案網址:',title_href_inf[j])
-    print('專案類別:',category_inf[j])
-    print('提案人:',name_inf[j])
-    print('提案人網址:',name_href_inf[j])
-    print('提案人介紹:',name_int_inf[j])
-    print('提案人網站平台:',name_web_inf2[j])
-    print('提案人網站平台網址:',name_web_href_inf2[j])
-    print('提案人贊助資訊與加入天數:',name_spon_inf1[j])
-    print('提案人發起計畫專案:',name_plan_title_inf2[j])
-    print('提案人發起計畫專案網址:',name_plan_title_href_inf2[j])
-    print('提案人發起計畫專案及日期:',name_plan_day_inf2[j])
-    print('目標金額:',price_target_inf[j])
-    print('募資時間:',times_inf[j])
-    print('專案內容:',title_content_inf2[j])
-    print('專案圖片數:',count_img_inf[j])
-    print('專案圖片:',title_img_inf3[j])
+# for j in range(len(title_inf)):
+#     print('時間戳記:',date_time[j])
+#     print('專案:',title_inf[j])
+#     print('專案網址:',title_href_inf[j])
+#     print('專案類別:',category_inf[j])
+#     print('提案人:',name_inf[j])
+#     print('提案人網址:',name_href_inf[j])
+#     print('提案人介紹:',name_int_inf[j])
+#     print('提案人網站平台:',name_web_inf2[j])
+#     print('提案人網站平台網址:',name_web_href_inf2[j])
+#     print('提案人贊助資訊與加入天數:',name_spon_inf1[j])
+#     print('提案人發起計畫專案:',name_plan_title_inf2[j])
+#     print('提案人發起計畫專案網址:',name_plan_title_href_inf2[j])
+#     print('提案人發起計畫專案及日期:',name_plan_day_inf2[j])
+#     print('目標金額:',price_target_inf[j])
+#     print('募資時間:',times_inf[j])
+#     print('專案內容:',title_content_inf2[j])
+#     print('專案圖片數:',count_img_inf[j])
+#     print('專案圖片:',title_img_inf3[j])
+
 
 
 # In[ ]:
