@@ -305,17 +305,17 @@ print(f"{int(alltime//60)} 分 {int(alltime%60)} 秒導入資料庫")
 # In[57]:
 
 
-for j in range(len(title_inf)):
-    print('時間戳記:',date_time[j])
-    print('專案:',title_inf[j])
-    print('專案網址:',title_href_inf[j])
-    print('募得金額:',price_inf[j])
-    print('金額達成率:',price_rate_inf[j])
-    print('贊助人數:',people_inf[j])
-    print('剩餘時間:',times_left_inf[j])
-    print('募資方案:',program_price_inf1[j])
-    print('方案贊助人數:',program_people_inf1[j])
-    print('實現時間:',realization_time_inf1[j])
-    print('專案更新次數:',updates_inf[j])
+# for j in range(len(title_inf)):
+#     print('時間戳記:',date_time[j])
+#     print('專案:',title_inf[j])
+#     print('專案網址:',title_href_inf[j])
+#     print('募得金額:',price_inf[j])
+#     print('金額達成率:',price_rate_inf[j])
+#     print('贊助人數:',people_inf[j])
+#     print('剩餘時間:',times_left_inf[j])
+#     print('募資方案:',program_price_inf1[j])
+#     print('方案贊助人數:',program_people_inf1[j])
+#     print('實現時間:',realization_time_inf1[j])
+#     print('專案更新次數:',updates_inf[j])
 
 
