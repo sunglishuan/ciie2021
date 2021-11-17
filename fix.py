@@ -214,7 +214,8 @@ for link in title_href_inf:
     title_img_inf1 = []#專案圖片
 
     time.sleep(2)
-
+for del_link in error_link:
+    title_href_inf.remove(del_link)
 #提案人網站
 for link in name_href_inf:
     try:

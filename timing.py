@@ -194,7 +194,8 @@ for link in title_href_inf:
     realization_time_inf = []#實現時間
 
     time.sleep(2)
-
+for del_link in error_link:
+    title_href_inf.remove(del_link)
 #專案更新
 for link in title_href_inf:
     new_url = link + "/updates"
@@ -245,8 +246,8 @@ result={'error_url':error_url,'error_link':error_link,'error_updates':error_upda
 now = datetime.now() #載入現在時間點
 now = now.strftime("%Y%m%d_%H%M") #調整時間格式
 fn = f'./lotsFix/zeczec_timing_{now}.json'
-with open(fn, 'w', encoding='utf-8') as fnresult:
-    json.dump(result,fnresult,ensure_ascii=False)
+# with open(fn, 'w', encoding='utf-8') as fnresult:
+#     json.dump(result,fnresult,ensure_ascii=False)
     
 
 start_time = time.time()#開始時間
