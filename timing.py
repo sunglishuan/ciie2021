@@ -194,7 +194,8 @@ for link in title_href_inf:
     realization_time_inf = []#實現時間
 
     time.sleep(2)
-
+for del_link in error_link:
+    title_href_inf.remove(del_link)
 #專案更新
 for link in title_href_inf:
     new_url = link + "/updates"
