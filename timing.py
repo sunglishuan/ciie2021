@@ -13,9 +13,9 @@ import time
 from datetime import datetime, timezone, timedelta 
 from fake_useragent import UserAgent
 import random
+import os
 
 start_time = time.time()#開始時間
-
 tz = timezone(timedelta(hours=+8))
 # 取得現在時間、指定時區、轉為 ISO 格式
 a = datetime.now(tz)
@@ -26,8 +26,7 @@ print("開始時間：",datetime.strftime(a,"%Y/%m/%d %H:%M:%S"))
 ua = UserAgent()
 user_agent = ua.chrome
 
-
-driverPath = '/home/g07153104/chromedriver'
+driverPath = "/home/g07153104/chromedriver"
 opt = webdriver.ChromeOptions()
 opt.add_argument('--user-agent=%s' % user_agent)
 
@@ -38,11 +37,12 @@ opt.add_argument('--user-agent=%s' % user_agent)
 opt.add_argument("--no-sandbox")
 opt.add_argument("--disable-dev-shm-usage")
 opt.add_argument("--headless")
+opt.add_argument("window-size=1920,1080") # 設定瀏覽器大小
+
 #改底
 browser = webdriver.Chrome(driverPath, chrome_options=opt)  #改：no options , only chrome_options
 browser.implicitly_wait(1)   
 browser.set_window_size(800, 700)
-
 
 
 date_time = []#時間戳記
@@ -74,6 +74,7 @@ for item in page:
     if item:
         page_inf.append(item.text)
 pages = int(page_inf[-1])
+print(f"共 {pages} 頁網址")
 
 for page in range(1,pages+1):
     url = 'https://www.zeczec.com/categories?page=x&type=0'
@@ -86,6 +87,7 @@ for page in range(1,pages+1):
     except Exception as e:
         print("爬取網址：",e)#可看到錯誤是什麼
         error_url.append(url1)
+        os.system("pkill chrome")
         continue
 
     timing = browser.find_elements_by_xpath("//body/div/div/div/div/div/span[@class='f7']")
@@ -107,15 +109,19 @@ title_href_inf = title_href_inf[0:len(timing_inf)]
 print("開始抓專案囉！")
 print(f"有{len(title_href_inf)}筆專案要抓")
 
-
+getNum = 0 
 #專案網站
 for link in title_href_inf:
+    getNum +=1
+    time.sleep(2)
+    print("現在是第",getNum,"個專案")
     try:
         browser.get(link)
 
     except Exception as e:
-        print("專案網站：",e)#可看到錯誤是什麼
+        print("專案網站有問題",e)#可看到錯誤是什麼
         error_link.append(link)
+
         date_time.append('NA')
         title_inf.append('NA')
         price_inf.append('NA')
@@ -125,8 +131,10 @@ for link in title_href_inf:
         program_price_inf1.append('NA')
         program_people_inf1.append('NA')
         realization_time_inf1.append('NA')
+        os.system("pkill chrome")
+        time.sleep(5)
         continue
-
+    
     now = datetime.now() #載入現在時間點
     now = now.strftime("%Y-%m-%d %H:%M:%S") #調整時間格式
     date_time.append(now)#時間戳記
@@ -140,19 +148,19 @@ for link in title_href_inf:
     for item in title:
         if item:
             title_inf.append(item.text)
-            print(item.text)
+            #print(item.text)
             
     price = browser.find_elements_by_css_selector(".f3.b.js-sum-raised.nowrap")#募得金額
     for item in price:
         if item:
             price_inf.append(item.text)
-            print(item.text)
+            #print(item.text)
 
     price_rate = browser.find_elements_by_css_selector(".js-percentage-raised.stroke")#金額達成率
     for item in price_rate:
         if item:
             price_rate_inf.append(item.text)
-            print(item.text)
+            #print(item.text)
 
     people = browser.find_elements_by_css_selector(".js-backers-count")#贊助人數
     for i in range(len(title)):
@@ -225,7 +233,7 @@ print(f"{int(alltime//60)} 分 {int(alltime%60)} 秒爬取專案")
 import json
 
 data = []
-
+print("再次確認：有{}個專案".format(len(title_inf)))
 for i in range(len(title_inf)): #將爬蟲內容轉成字典
     result0 = dict(date_time=date_time[i],
                    title=title_inf[i],
